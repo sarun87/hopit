@@ -22,7 +22,8 @@ import android.widget.TextView;
 public class Tab1 extends Activity {
 	
 	private static String srcFile = "";
-	
+	private static String destFile = "";
+	private static String fileType = "";
     private static final int REQUEST_ENABLE_BT = 0;
 	private static final String HOPIT_DEVICE = "HOPIT";
 
@@ -57,9 +58,25 @@ public class Tab1 extends Activity {
         //Dialog alertDialog = new Dialog(this);
         //.Builder(this).create();
         //alertDialog.show();
-		
+		fileType = "src";
 		loadFileList(new File(Environment.getExternalStorageDirectory() + "//"));
 		showDialog(DIALOG_LOAD_FILE);	
+	}
+	
+	public void onSelectDestClicked(View v){
+		//onCreateDialog(DIALOG_LOAD_FILE);
+        //Dialog alertDialog = new Dialog(this);
+        //.Builder(this).create();
+        //alertDialog.show();
+		fileType = "dest";
+		loadFileList(new File(Environment.getExternalStorageDirectory() + "//"));
+		showDialog(DIALOG_LOAD_FILE);	
+	}
+	
+	
+	public void onConvertClicked(View v){
+		/// Write bluetooth search/protocol handshake and conversion code here.
+		// For now, use default destination file/folder
 	}
 	
 	
@@ -86,6 +103,9 @@ public class Tab1 extends Activity {
 	            }
 	        };
 	        mFileList = mPath.list(filter);
+	        String path = mPath.getPath();
+	        for(int i = 0; i < mFileList.length; ++i)
+	        	mFileList[i] = path + "/" + mFileList[i]; 
 	    }
 	    else {
 	        mFileList= new String[0];
@@ -96,7 +116,7 @@ public class Tab1 extends Activity {
 	protected Dialog onCreateDialog(int id) {
 	    Dialog dialog = null;
 	    AlertDialog.Builder builder = new Builder(this);
-
+	    
 	    switch(id) {
 	        case DIALOG_LOAD_FILE:
 	            builder.setTitle("Choose your file");
@@ -109,7 +129,10 @@ public class Tab1 extends Activity {
 	            		public void onClick(DialogInterface dialog, int which) {
 	            			mChosenFile = mFileList[which];
 	            			//you can do stuff with the file here too
-	            			setSrcFile();
+	            			dialog.dismiss();
+	            			dialog.cancel();
+	            			setFile();
+	            			return;
 	            		}
 	            	});
 	            break;
@@ -118,15 +141,25 @@ public class Tab1 extends Activity {
 	    return dialog;
 	}
 	
-	public void setSrcFile(){
+	public void setFile(){
 		if(new File(mChosenFile).isDirectory()){
 			loadFileList(new File(mChosenFile+ "//"));
+			removeDialog(DIALOG_LOAD_FILE);
 			showDialog(DIALOG_LOAD_FILE);
 		}	
 		else{
-			srcFile = mChosenFile;
-			TextView infoServ = (TextView) findViewById(R.id.textView_Src);
+			
+			TextView infoServ = null;
+			if(fileType.equalsIgnoreCase("src"))
+			{	srcFile = mChosenFile;
+				infoServ= (TextView) findViewById(R.id.textView_Src);
+			}else
+			{
+				destFile = mChosenFile;
+				infoServ= (TextView) findViewById(R.id.textView_Dest);
+			}
 			infoServ.setText(mChosenFile);
+			fileType = "";
 		}
 	}
 	
