@@ -17,13 +17,17 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class Tab1 extends Activity {
 	
 	private static String srcFile = "";
 	private static String destFile = "";
-	private static String fileType = "";
+	public static String selected_app = "DOC2PDF";
     private static final int REQUEST_ENABLE_BT = 0;
 	private static final String HOPIT_DEVICE = "HOPIT";
 
@@ -49,30 +53,24 @@ public class Tab1 extends Activity {
 			mBtAdapter.setName(HOPIT_DEVICE + "_" + mBtAdapter.getAddress());
 
 		}
-		//
-
+		
+		// Load spinner
+		Spinner spinner = (Spinner) findViewById(R.id.spinner_applist);
+		// Create an ArrayAdapter using the string array and a default spinner layout
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+		        R.array.app_array, android.R.layout.simple_spinner_item);
+		// Specify the layout to use when the list of choices appears
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		// Apply the adapter to the spinner
+		spinner.setAdapter(adapter);
+		SpinnerActivity listener = null;
+		spinner.setOnItemSelectedListener(listener);
 	}
 	
 	public void onSelectSrcClicked(View v){
-		//onCreateDialog(DIALOG_LOAD_FILE);
-        //Dialog alertDialog = new Dialog(this);
-        //.Builder(this).create();
-        //alertDialog.show();
-		fileType = "src";
 		loadFileList(new File(Environment.getExternalStorageDirectory() + "//"));
 		showDialog(DIALOG_LOAD_FILE);	
 	}
-	
-	public void onSelectDestClicked(View v){
-		//onCreateDialog(DIALOG_LOAD_FILE);
-        //Dialog alertDialog = new Dialog(this);
-        //.Builder(this).create();
-        //alertDialog.show();
-		fileType = "dest";
-		loadFileList(new File(Environment.getExternalStorageDirectory() + "//"));
-		showDialog(DIALOG_LOAD_FILE);	
-	}
-	
 	
 	public void onConvertClicked(View v){
 		/// Write bluetooth search/protocol handshake and conversion code here.
@@ -128,11 +126,7 @@ public class Tab1 extends Activity {
 	            	builder.setItems(mFileList, new DialogInterface.OnClickListener() {
 	            		public void onClick(DialogInterface dialog, int which) {
 	            			mChosenFile = mFileList[which];
-	            			//you can do stuff with the file here too
-	            			dialog.dismiss();
-	            			dialog.cancel();
 	            			setFile();
-	            			return;
 	            		}
 	            	});
 	            break;
@@ -148,19 +142,24 @@ public class Tab1 extends Activity {
 			showDialog(DIALOG_LOAD_FILE);
 		}	
 		else{
-			
-			TextView infoServ = null;
-			if(fileType.equalsIgnoreCase("src"))
-			{	srcFile = mChosenFile;
-				infoServ= (TextView) findViewById(R.id.textView_Src);
-			}else
-			{
-				destFile = mChosenFile;
-				infoServ= (TextView) findViewById(R.id.textView_Dest);
-			}
-			infoServ.setText(mChosenFile);
-			fileType = "";
+			srcFile = mChosenFile;
+			destFile = srcFile + ".pdf";
+			TextView infoServ= (TextView) findViewById(R.id.textview_src);
+			infoServ.setText("Src File:"+ mChosenFile);
 		}
 	}
 	
+}
+
+class SpinnerActivity extends Activity implements OnItemSelectedListener {
+        
+    public void onItemSelected(AdapterView<?> parent, View view, 
+            int pos, long id) {
+        // An item was selected. You can retrieve the selected item using
+        Tab1.selected_app = parent.getItemAtPosition(pos).toString();
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
+    }
 }
