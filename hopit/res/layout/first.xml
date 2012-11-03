@@ -20,15 +20,27 @@
         android:layout_gravity="top"
         android:layout_weight="1"
         android:paddingTop="10dp" >
-
+
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
+
+            <CheckedTextView
+                android:id="@+id/spinner_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select App" />
+
+            <Spinner
+                android:id="@+id/spinner_applist"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
         </TableRow>
 
 		<TableRow
-		    android:id="@+id/tableRowCtrlPanel"
+		    android:id="@+id/tableRow2"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:baselineAligned="true" >
@@ -41,7 +53,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/button_selectSrc"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
@@ -50,52 +62,34 @@
                 android:text="Select" />
 
         </TableRow>
-        <TableRow>
-            <TextView
-                android:id="@+id/textView_Src"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Src File:"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
         <TableRow
-            android:id="@+id/tableRowCtrlPanel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/textView2"
+            android:id="@+id/tableRow3"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:baselineAligned="true" >
+            
+               	<TextView
+                android:id="@+id/textview_src"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select Destination"
+                android:text="Src File:NONE"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-
+            
+        </TableRow>
+        
+        <TableRow
+	   		android:id="@+id/tableRow4"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:baselineAligned="true" >
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/button_convert"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:onClick="onSelectDestClicked"
                 android:layout_weight="1"
-                android:text="Select" />
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:id="@+id/textView_Dest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Src File:"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
-        <TableRow>
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
                 android:onClick="onConvertClicked"
-                android:layout_weight="1"
                 android:text="Convert" />
+
         </TableRow>
 
     </TableLayout>
